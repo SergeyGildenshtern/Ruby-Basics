@@ -12,23 +12,26 @@ class Station
     @trains.delete(train)
   end
 
-  def show_trains
-    @trains
-  end
-
-  def show_trains_statistics
-    quantity_passenger_trains = 0
-    quantity_freight_trains = 0
-
+  def trains_by(type)
+    trains = []
     @trains.each do |train|
-      if train.type == "грузовой"
-        quantity_freight_trains += 1
-      else
-        quantity_passenger_trains += 1
+      if train.type == type
+        trains << train
       end
     end
 
-    [ quantity_freight_trains, quantity_passenger_trains ]
+    return trains
+  end
+
+  def count_trains_by(type)
+    counter = 0
+    @trains.each do |train|
+      if train.type == type
+        counter += 1
+      end
+    end
+
+    return counter
   end
 end
 
@@ -53,23 +56,20 @@ class Route
 end
 
 class Train
-  attr_accessor :speed, :vans_quantity
-  attr_reader :type
+  attr_accessor :vans_quantity, :station
+  attr_reader :type, :speed, :route
 
   def initialize(number, type, vans_quantity)
     @number = number
     @type = type
     @vans_quantity = vans_quantity
-    @route = nil
     @speed = 0
   end
 
-  def stop
-    self.speed = 0
-  end
-
-  def go
-    self.speed = 100
+  def speed=(value)
+    if value >= 0
+      @speed = value
+    end
   end
 
   def attach_van
@@ -84,33 +84,26 @@ class Train
     end
   end
 
-  def route
-    if @route != nil
-      if @station == @route.show_stations.first
-        [nil, @route.show_stations.first, @route.show_stations[1]]
-      elsif @station == @route.show_stations.last
-        [@route.show_stations[-2], @route.show_stations.last, nil]
-      else
-        index = @route.show_stations.index(@station)
-        [@route.show_stations[index - 1], @station, @route.show_stations[index + 1]]
-      end
-    end
-  end
-
   def route=(route)
     @route = route
-    @station = @route.show_stations[0]
+    self.station = route.show_stations[0]
   end
 
-  def go_next_station
-    if self.route.last != nil
-      @station = self.route.last
+  def next_station
+    if station != route.show_stations.last
+      index = route.show_stations.index(station)
+      route.show_stations[index + 1]
+    else
+      station
     end
   end
 
-  def go_previous_station
-    if self.route.first != nil
-      @station = self.route.first
+  def previous_station
+    if station != route.show_stations.first
+      index = route.show_stations.index(station)
+      route.show_stations[index - 1]
+    else
+      station
     end
   end
 end
