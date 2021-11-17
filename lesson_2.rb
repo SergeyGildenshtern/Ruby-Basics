@@ -83,14 +83,14 @@ class Train
     self.station = route.show_stations[0]
   end
 
-  def get_next_station
+  def next_station
     if station && station != route.show_stations.last
       index = route.show_stations.index(station)
       route.show_stations[index + 1]
     end
   end
 
-  def get_previous_station
+  def previous_station
     if station && station != route.show_stations.first
       index = route.show_stations.index(station)
       route.show_stations[index - 1]
@@ -98,16 +98,10 @@ class Train
   end
 
   def go_next_station
-    next_st = get_next_station
-    if next_st
-      self.station = next_st
-    end
+    self.station = next_station if next_station
   end
 
   def go_previous_station
-    prev_st = get_next_station
-    if prev_st
-      self.station = prev_st
-    end
+    self.station = previous_station if previous_station
   end
 end
