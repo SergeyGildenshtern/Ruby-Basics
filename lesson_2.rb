@@ -13,25 +13,11 @@ class Station
   end
 
   def trains_by(type)
-    trains = []
-    @trains.each do |train|
-      if train.type == type
-        trains << train
-      end
-    end
-
-    return trains
+    @trains.filter { |train| train.type == type }
   end
 
   def count_trains_by(type)
-    counter = 0
-    @trains.each do |train|
-      if train.type == type
-        counter += 1
-      end
-    end
-
-    return counter
+    trains_by(type).count
   end
 end
 
@@ -66,6 +52,14 @@ class Train
     @speed = 0
   end
 
+  def go
+    self.speed = 100
+  end
+
+  def stop
+    self.speed = 0
+  end
+
   def speed=(value)
     if value >= 0
       @speed = value
@@ -73,13 +67,13 @@ class Train
   end
 
   def attach_van
-    if self.speed == 0
+    if speed == 0
       self.vans_quantity += 1
     end
   end
 
   def detach_van
-    if self.speed == 0 and self.vans_quantity > 0
+    if speed == 0 and vans_quantity > 0
       self.vans_quantity -= 1
     end
   end
@@ -90,20 +84,16 @@ class Train
   end
 
   def next_station
-    if station != route.show_stations.last
+    if station and station != route.show_stations.last
       index = route.show_stations.index(station)
       route.show_stations[index + 1]
-    else
-      station
     end
   end
 
   def previous_station
-    if station != route.show_stations.first
+    if station and station != route.show_stations.first
       index = route.show_stations.index(station)
       route.show_stations[index - 1]
-    else
-      station
     end
   end
 end
