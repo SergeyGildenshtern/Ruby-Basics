@@ -24,7 +24,7 @@ class Train
   end
 
   def attach_van(van)
-    @vans << van if speed == 0
+    @vans << van if speed == 0 && van.type == type
   end
 
   def detach_van(van)
