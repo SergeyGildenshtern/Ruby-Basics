@@ -113,7 +113,6 @@ class Program
     route = @routes[route_id - 1]
     if route
       train.route = route
-      route.show_stations.first.get_train(train)
       puts "Поезду №#{train_id} присвоен маршрут №#{route_id}"
     else
       puts "Маршрут №#{route_id} не найден!"
@@ -149,10 +148,7 @@ class Program
 
   def move_train_to_next_station(train, train_id)
     if train.route
-      if train.next_station
-        train.go_next_station
-        train.previous_station.send_train(train)
-        train.station.get_train(train)
+      if train.go_next_station
         puts "Поезд №#{train_id} перемещён на следующую станцию"
       else
         puts "Поезд №#{train_id} находится на конечной станции!"
@@ -164,10 +160,7 @@ class Program
 
   def move_train_to_previous_station(train, train_id)
     if train.route
-      if train.previous_station
-        train.go_previous_station
-        train.next_station.send_train(train)
-        train.station.get_train(train)
+      if train.go_previous_station
         puts "Поезд №#{train_id} перемещён на предыдущую станцию"
       else
         puts "Поезд №#{train_id} находится на начальной станции!"

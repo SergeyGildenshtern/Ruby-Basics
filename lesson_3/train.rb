@@ -34,6 +34,7 @@ class Train
   def route=(route)
     @route = route
     self.station = route.show_stations.first
+    station.get_train(self)
   end
 
   def next_station
@@ -51,10 +52,18 @@ class Train
   end
 
   def go_next_station
-    self.station = next_station if next_station
+    if next_station
+      station.send_train(self)
+      self.station = next_station
+      station.get_train(self)
+    end
   end
 
   def go_previous_station
-    self.station = previous_station if previous_station
+    if previous_station
+      station.send_train(self)
+      self.station = previous_station
+      station.get_train(self)
+    end
   end
 end
