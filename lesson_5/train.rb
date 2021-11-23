@@ -26,15 +26,15 @@ class Train
     @type = type
     @vans = []
     @speed = 0
-    @@trains << self
     validate!
+    @@trains << self
   end
 
   protected
 
   def validate!
     raise "Номер не может быть пустым!" if number.nil?
-    raise "Тип не может быть пустым!" if number.nil?
+    raise "Тип не может быть пустым!" if type.nil?
     raise "Недопустимый формат номера!" if number !~ NUMBER_FORMAT
     raise "Недопустимый тип поезда!" if type != "пассажирский" && type != "грузовой"
   end
