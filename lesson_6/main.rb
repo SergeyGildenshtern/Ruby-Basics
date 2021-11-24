@@ -353,6 +353,3 @@ class Program
   end
 
 end
-
-pr = Program.new
-pr.start
