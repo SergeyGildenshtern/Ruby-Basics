@@ -1,12 +1,11 @@
 require_relative 'van'
 
 class PassengerVan < Van
-  attr_reader :seats_quantity, :available_seats_quantity, :occupied_seats_quantity
+  attr_reader :seats_quantity, :occupied_seats_quantity
 
   def initialize(seats_quantity)
     @type = "пассажирский"
     @seats_quantity = seats_quantity
-    @available_seats_quantity = @seats_quantity
     @occupied_seats_quantity = 0
     validate!
   end
@@ -28,7 +27,10 @@ class PassengerVan < Van
   def take_seat
     if occupied_seats_quantity < seats_quantity
       @occupied_seats_quantity += 1
-      @available_seats_quantity -= 1
     end
+  end
+
+  def available_seats_quantity
+    seats_quantity - occupied_seats_quantity
   end
 end

@@ -3,7 +3,7 @@ require_relative 'modules/instance_counter'
 class Station
   include InstanceCounter
 
-  attr_reader :name
+  attr_reader :name, :trains
 
   @@stations = []
   def self.all
@@ -49,11 +49,7 @@ class Station
     trains_by(type).count
   end
 
-  def trains(&block)
-    if block_given?
-      @trains.each { |train| block.call(train) }
-    else
-      @trains
-    end
+  def station_trains(&block)
+    @trains.each { |train| block.call(train) } if block_given?
   end
 end

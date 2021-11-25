@@ -59,10 +59,9 @@ class Program
     train_number = gets.chomp
     print "Введите тип поезда:"
     train_type = gets.chomp
-    # пассажирский  грузовой
-    if train_type == "1"
+    if train_type == "пассажирский"
       @trains << PassengerTrain.new(train_number)
-    elsif train_type == "2"
+    elsif train_type == "грузовой"
       @trains << CargoTrain.new(train_number)
     else
       puts "Недопустимый тип поезда!"
@@ -189,9 +188,9 @@ class Program
       puts "Вагоны поезда №#{train_number}:"
       index = 0
       if train.type == "пассажирский"
-        train.vans { |van| puts "--- Пассажирский вагон №#{index += 1}, кол-во свободных мест: #{van.available_seats_quantity}, кол-во занятых мест: #{van.occupied_seats_quantity}" }
+        train.train_vans { |van| puts "--- Пассажирский вагон №#{index += 1}, кол-во свободных мест: #{van.available_seats_quantity}, кол-во занятых мест: #{van.occupied_seats_quantity}" }
       else
-        train.vans { |van| puts "--- Грузовой вагон №#{index += 1}, кол-во свободного объёма: #{van.available_volume}, кол-во занятого объёма: #{van.occupied_volume}" }
+        train.train_vans { |van| puts "--- Грузовой вагон №#{index += 1}, кол-во свободного объёма: #{van.available_volume}, кол-во занятого объёма: #{van.occupied_volume}" }
       end
     end
   end
@@ -343,7 +342,7 @@ class Program
     if station
       if station.trains.any?
         puts "Поезда на станции '#{station_name}':"
-        station.trains { |tr| puts "--- #{tr.type.capitalize} поезд №#{tr.number} с кол-вом вагонов: #{tr.vans.size}"}
+        station.station_trains { |tr| puts "--- #{tr.type.capitalize} поезд №#{tr.number} с кол-вом вагонов: #{tr.vans.size}"}
       else
         puts "На станции '#{station_name}' нет поездов"
       end

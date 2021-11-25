@@ -7,7 +7,7 @@ class Train
 
   NUMBER_FORMAT = /^[a-я0-9]{3}-?[a-я0-9]{2}$/i
 
-  attr_reader :station, :type, :speed, :route, :number
+  attr_reader :station, :type, :speed, :route, :number, :vans
 
   protected
   # я установил сеттер speed в protected, чтобы использовались только методы go и stop для изменения скорости поезда
@@ -100,11 +100,7 @@ class Train
     end
   end
 
-  def vans(&block)
-    if block_given?
-      @vans.each { |van| block.call(van) }
-    else
-      @vans
-    end
+  def train_vans(&block)
+    @vans.each { |van| block.call(van) } if block_given?
   end
 end
