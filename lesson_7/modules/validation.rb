@@ -35,19 +35,19 @@ module Validation
       end
     end
 
-    def validate_presence(value, param = nil)
+    def validate_presence(value, param)
       raise "Значение атрибута равно nil или пустой строке!" if value.nil? || value.strip.empty?
     end
 
-    def validate_format(value, param = nil)
+    def validate_format(value, param)
       raise "Значение атрибута не соответствует формату!" if value !~ param
     end
 
-    def validate_type(value, param = nil)
+    def validate_type(value, param)
       raise "Значение атрибута не соответствует классу!" if value.class != param
     end
 
-    def validate_more_zero(value, param = nil)
+    def validate_more_zero(value, param)
       raise "Значение атрибута меньше 1!" if value < 1
     end
   end
