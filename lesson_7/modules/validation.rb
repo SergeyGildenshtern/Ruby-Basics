@@ -31,20 +31,24 @@ module Validation
     protected
     def validate!
       self.class.validations.each do |validation|
-        value = instance_variable_get(validation[:name])
-        case validation[:type]
-        when :presence
-          raise "Значение атрибута равно nil или пустой строке!" if value.nil? || value.strip.empty?
-        when :format
-          raise "Значение атрибута не соответствует формату!" if value !~ validation[:param]
-        when :type
-          raise "Значение атрибута не соответствует классу!" if value.class != validation[:param]
-        when :more_zero
-          raise "Значение атрибута меньше 1!" if value < 1
-        else
-          next
-        end
+        send("validate_#{validation[:type]}", instance_variable_get(validation[:name]), validation[:param])
       end
+    end
+
+    def validate_presence(value, param = nil)
+      raise "Значение атрибута равно nil или пустой строке!" if value.nil? || value.strip.empty?
+    end
+
+    def validate_format(value, param = nil)
+      raise "Значение атрибута не соответствует формату!" if value !~ param
+    end
+
+    def validate_type(value, param = nil)
+      raise "Значение атрибута не соответствует классу!" if value.class != param
+    end
+
+    def validate_more_zero(value, param = nil)
+      raise "Значение атрибута меньше 1!" if value < 1
     end
   end
 end
